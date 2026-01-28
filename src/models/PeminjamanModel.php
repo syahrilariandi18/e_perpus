@@ -9,15 +9,15 @@ class PeminjamanModel {
 
 
 public function readAll() {
-        $query = "SELECT p.*, a.nama_lengkap, a.no_anggota, adm.nama_lengkap as admin_nama
-                  FROM {$this->table} p
-                  JOIN anggota a ON p.id_anggota = a.id_anggota
-                  JOIN admin adm ON p.id_admin = adm.id_admin
-                  ORDER BY p.tanggal_pinjam DESC";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
-    }
+    $query = "SELECT p.*, a.nama_lengkap, a.no_anggota, adm.nama_lengkap as admin_nama
+              FROM {$this->table} p
+              JOIN anggota a ON p.id_anggota = a.id_anggota
+              JOIN admin adm ON p.id_admin = adm.id_admin
+              ORDER BY p.tanggal_pinjam DESC";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
+}
     public function readById($id) {
         $query = "SELECT p.*, a.nama_lengkap, a.no_hp, a.no_anggota
                   FROM {$this->table} p
@@ -98,17 +98,18 @@ public function readAll() {
         return $stmt;
     }
 
-    public function filterByStatus($status) {
-        $query = "SELECT p.*, a.nama_lengkap, a.no_anggota
-                  FROM {$this->table} p
-                  JOIN anggota a ON p.id_anggota = a.id_anggota
-                  WHERE p.status_pinjam = :status
-                  ORDER BY p.tanggal_pinjam DESC";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':status', $status);
-        $stmt->execute();
-        return $stmt;
-    }
+public function filterByStatus($status) {
+    $query = "SELECT p.*, a.nama_lengkap, a.no_anggota, adm.nama_lengkap as admin_nama
+              FROM {$this->table} p
+              JOIN anggota a ON p.id_anggota = a.id_anggota
+              JOIN admin adm ON p.id_admin = adm.id_admin
+              WHERE p.status_pinjam = :status
+              ORDER BY p.tanggal_pinjam DESC";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':status', $status);
+    $stmt->execute();
+    return $stmt;
+}
 
     public function countDipinjam() {
         $query = "SELECT COUNT(*) as total FROM {$this->table} WHERE status_pinjam = 'dipinjam'";
