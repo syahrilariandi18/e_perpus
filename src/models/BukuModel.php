@@ -10,21 +10,22 @@ class BukuModel {
     /**
      * READ - Ambil semua data buku dengan JOIN
      */
-public function readAll() {
-    $query = "SELECT 
-        b.id_buku, b.isbn, b.judul, b.tahun_terbit, 
-        b.jumlah_total, b.jumlah_tersedia, b.foto_sampul, b.status,
-        k.nama_kategori, pen.nama_penulis, per.nama_penerbit 
-        FROM " . $this->table_name . " b
-        LEFT JOIN kategori k ON b.id_kategori = k.id_kategori
-        LEFT JOIN penulis pen ON b.id_penulis = pen.id_penulis
-        LEFT JOIN penerbit per ON b.id_penerbit = per.id_penerbit
-        ORDER BY b.judul ASC";
-        
-    $stmt = $this->conn->prepare($query);
-    $stmt->execute();
-    return $stmt;
-}
+    public function readAll() {
+        $query = "SELECT 
+            b.id_buku, b.isbn, b.judul, b.tahun_terbit, 
+            b.jumlah_total, b.jumlah_tersedia, b.foto_sampul, b.status,
+            k.nama_kategori, pen.nama_penulis, per.nama_penerbit 
+            FROM " . $this->table_name . " b
+            LEFT JOIN kategori k ON b.id_kategori = k.id_kategori
+            LEFT JOIN penulis pen ON b.id_penulis = pen.id_penulis
+            LEFT JOIN penerbit per ON b.id_penerbit = per.id_penerbit
+            ORDER BY b.judul ASC";
+            
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
     /**
      * READ - Ambil satu buku berdasarkan ID
      */
@@ -42,12 +43,12 @@ public function readAll() {
     /**
      * CREATE - Tambah buku baru
      */
-public function create($data) {
-    $query = "INSERT INTO " . $this->table_name . " 
-              (isbn, judul, id_penulis, id_penerbit, id_kategori, tahun_terbit, sinopsis, 
-               jumlah_total, jumlah_tersedia, foto_sampul) 
-              VALUES (:isbn, :judul, :id_penulis, :id_penerbit, :id_kategori, :tahun_terbit, 
-                      :sinopsis, :jumlah, :jumlah, :foto_sampul)";
+    public function create($data) {
+        $query = "INSERT INTO " . $this->table_name . " 
+                (isbn, judul, id_penulis, id_penerbit, id_kategori, tahun_terbit, sinopsis, 
+                jumlah_total, jumlah_tersedia, foto_sampul) 
+                VALUES (:isbn, :judul, :id_penulis, :id_penerbit, :id_kategori, :tahun_terbit, 
+                        :sinopsis, :jumlah, :jumlah, :foto_sampul)";
     
     $stmt = $this->conn->prepare($query);
     
@@ -65,7 +66,7 @@ public function create($data) {
     $stmt->bindParam(':foto_sampul', $data['foto_sampul']);
     
     return $stmt->execute();
-}
+    }
     
     /**
      * UPDATE - Perbarui buku
@@ -104,7 +105,7 @@ public function create($data) {
     }
     
     return $stmt->execute();
-}
+    }
 
     /**
      * DELETE - Hapus buku
